@@ -1,0 +1,28 @@
+GET {{endpoint}}/todos
+
+###
+
+GET {{endpoint}}/todos/65ab56ea679e851a94685808
+
+###
+
+POST {{endpoint}}/todos
+Content-Type: application/json
+
+{
+  "title": "Foo Bar"
+}
+
+###
+
+DELETE {{endpoint}}/todos/65ab39aad4a597893078ad10
+
+###
+
+PUT {{endpoint}}/todos/65ab305656cc24e087edd5c2
+Content-Type: application/json
+
+{
+  "title": "Baz Qux",
+  "completed": true
+}

@@ -1,0 +1,7 @@
+{
+  "rest-client.environmentVariables": {
+    "$shared": {
+      "endpoint": "http://localhost:8080"
+    }
+  }
+}
