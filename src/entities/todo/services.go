@@ -31,10 +31,7 @@ func GetTodos() ([]Todo, error) {
 func GetTodo(id primitive.ObjectID) (*Todo, error) {
 	var todo Todo
 
-	err := coll().FindOne(clients.Ctx, bson.D{{
-		Key:   "_id",
-		Value: id,
-	}}).Decode(&todo)
+	err := coll().FindOne(clients.Ctx, bson.D{{Key: "_id", Value: id}}).Decode(&todo)
 	if err != nil {
 		return nil, err
 	}
@@ -54,10 +51,7 @@ func InsertTodo(todo Todo) error {
 }
 
 func RemoveTodo(id primitive.ObjectID) error {
-	_, err := coll().DeleteOne(clients.Ctx, bson.D{{
-		Key:   "_id",
-		Value: id,
-	}})
+	_, err := coll().DeleteOne(clients.Ctx, bson.D{{Key: "_id", Value: id}})
 	if err != nil {
 		return err
 	}

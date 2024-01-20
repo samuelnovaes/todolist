@@ -1,11 +1,14 @@
 package todo
 
-import "github.com/gorilla/mux"
+import (
+	"github.com/gin-gonic/gin"
+)
 
-func Routes(router *mux.Router) {
-	router.HandleFunc("/todos", GetTodosHandler).Methods("GET")
-	router.HandleFunc("/todos", InsertTodoHandler).Methods("POST")
-	router.HandleFunc("/todos/{id}", GetTodoHandler).Methods("GET")
-	router.HandleFunc("/todos/{id}", RemoveTodoHandler).Methods("DELETE")
-	router.HandleFunc("/todos/{id}", UpdateTodoHandler).Methods("PUT")
+func Routes(engine *gin.Engine) {
+	group := engine.Group("/todos")
+	group.GET("/", GetTodosHandler)
+	group.GET("/:id", GetTodoHandler)
+	group.POST("/", InsertTodoHandler)
+	group.DELETE("/:id", RemoveTodoHandler)
+	group.PUT("/:id", UpdateTodoHandler)
 }

@@ -1,13 +1,11 @@
 package main
 
 import (
-	"fmt"
-	"net"
-	"net/http"
+	"os"
 	"todolist/src/clients"
 	"todolist/src/entities/todo"
 
-	"github.com/gorilla/mux"
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
 
@@ -20,18 +18,10 @@ func init() {
 }
 
 func main() {
-	srv := &mux.Router{}
-	todo.Routes(srv)
+	gin.SetMode(os.Getenv("GIN_MODE"))
+	engine := gin.Default()
+	engine.SetTrustedProxies(nil)
 
-	listener, err := net.Listen("tcp", ":8080")
-	if err != nil {
-		panic(err)
-	}
-
-	fmt.Println("Server running...")
-
-	err = http.Serve(listener, srv)
-	if err != nil {
-		panic(err)
-	}
+	todo.Routes(engine)
+	engine.Run(":8080")
 }

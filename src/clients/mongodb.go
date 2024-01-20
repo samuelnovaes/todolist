@@ -4,6 +4,7 @@ import (
 	"context"
 	"os"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -18,6 +19,12 @@ func ConnectMongoDB() error {
 	client, err := mongo.Connect(Ctx, opts)
 	if err != nil {
 		return err
+	}
+
+	var result bson.M
+	err = client.Database("admin").RunCommand(Ctx, bson.D{{Key: "ping", Value: 1}}).Decode(&result)
+	if err != nil {
+		panic(err)
 	}
 
 	DB = client.Database("todolist")
