@@ -5,17 +5,12 @@ import (
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func coll() *mongo.Collection {
-	return clients.DB.Collection("todos")
-}
-
 func GetTodos() ([]Todo, error) {
-	var todos []Todo
+	todos := []Todo{}
 
-	cursor, err := coll().Find(clients.Ctx, bson.D{{}})
+	cursor, err := TodoColl().Find(clients.Ctx, bson.D{{}})
 	if err != nil {
 		return nil, err
 	}
@@ -31,7 +26,7 @@ func GetTodos() ([]Todo, error) {
 func GetTodo(id primitive.ObjectID) (*Todo, error) {
 	var todo Todo
 
-	err := coll().FindOne(clients.Ctx, bson.D{{Key: "_id", Value: id}}).Decode(&todo)
+	err := TodoColl().FindOne(clients.Ctx, bson.D{{Key: "_id", Value: id}}).Decode(&todo)
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +37,7 @@ func GetTodo(id primitive.ObjectID) (*Todo, error) {
 func InsertTodo(todo Todo) error {
 	todo.Id = primitive.NewObjectID()
 
-	_, err := coll().InsertOne(clients.Ctx, todo)
+	_, err := TodoColl().InsertOne(clients.Ctx, todo)
 	if err != nil {
 		return err
 	}
@@ -51,7 +46,7 @@ func InsertTodo(todo Todo) error {
 }
 
 func RemoveTodo(id primitive.ObjectID) error {
-	_, err := coll().DeleteOne(clients.Ctx, bson.D{{Key: "_id", Value: id}})
+	_, err := TodoColl().DeleteOne(clients.Ctx, bson.D{{Key: "_id", Value: id}})
 	if err != nil {
 		return err
 	}
@@ -60,7 +55,7 @@ func RemoveTodo(id primitive.ObjectID) error {
 }
 
 func UpdateTodo(todo Todo) error {
-	_, err := coll().UpdateByID(clients.Ctx, todo.Id, bson.D{{
+	_, err := TodoColl().UpdateByID(clients.Ctx, todo.Id, bson.D{{
 		Key:   "$set",
 		Value: todo,
 	}})
