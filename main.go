@@ -23,5 +23,9 @@ func main() {
 	engine.SetTrustedProxies(nil)
 
 	todo.Routes(engine)
-	engine.Run(":8080")
+
+	err := engine.Run(":8080")
+	if err != nil {
+		panic(err)
+	}
 }
