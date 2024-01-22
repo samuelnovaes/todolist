@@ -24,7 +24,7 @@ func ConnectMongoDB() error {
 	var result bson.M
 	err = client.Database("admin").RunCommand(Ctx, bson.D{{Key: "ping", Value: 1}}).Decode(&result)
 	if err != nil {
-		panic(err)
+		return err
 	}
 
 	DB = client.Database("todolist")
